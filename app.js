@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const Thing = require('./Models/thing')
 require('dotenv').config(); 
+const path=require('path')
 const mongoose=require('mongoose')
 
 mongoose.connect('mongodb+srv://heritier:<edems0309>@cluster0.u4rf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',{
@@ -36,5 +37,6 @@ app.use((req, res, next) => {
 });
 app.use('api/stuff', stuffRoute)
 app.use('/api/auth', userRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports =app
