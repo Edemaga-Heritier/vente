@@ -4,27 +4,26 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const Thing = require('./Models/thing')
 require('dotenv').config(); 
+const mongoose=require('mongoose')
+
+mongoose.connect('mongodb+srv://heritier:<edems0309>@cluster0.u4rf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',{
+  tls: true, // Active SSL/TLS
+  tlsInsecure: true, // Permet de contourner les erreurs de certificats (utilisez seulement en dev)
+  retryWrites: true,
+  w: 'majority',
+}
+)
+ .then(() => console.log('Connected to MongoDB'))
+ .catch(err => console.error(err))
+
+
+
+
+
+
 
 const stuffRoute= require('./Route/stuff')
-
-const mongoose = require('mongoose');
-
-// Définissez ici l'URI de votre base de données MongoDB
-const uri ='mongodb+srv://heritier:<edems0309>@cluster0.u4rf0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-
-// Vérifiez que l'URI est définie
-if (!uri) {
-  console.error('Erreur : URI MongoDB non défini.');
-  process.exit(1); // Quitte l'application si l'URI est manquant
-}
-
-// Connexion à MongoDB
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch((err) => {
-    console.error('Connexion à MongoDB échouée :', err.message);
-    process.exit(1); // Quitte l'application si la connexion échoue
-  });
+const userRoutes = require('./Route/user');
 
 
 
@@ -36,5 +35,6 @@ app.use((req, res, next) => {
   next();
 });
 app.use('api/stuff', stuffRoute)
+app.use('/api/auth', userRoutes);
 
 module.exports =app
